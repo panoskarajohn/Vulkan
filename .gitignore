@@ -32,4 +32,4 @@
 *.app
 
 *.o
-vulcan_test
+vulkan_test
