@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <cstring>
 
-VulkanApp::VulkanApp() 
+VulkanApp::VulkanApp()
     : validationLayers{"VK_LAYER_KHRONOS_validation"},
       instanceExtensions{
           VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
@@ -14,8 +14,45 @@ VulkanApp::~VulkanApp() {
 }
 
 void VulkanApp::run() {
+    initWindow();
+    initVulkan();
+    mainLoop();
+}
+
+void VulkanApp::initWindow() {
+    glfwInit();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan Window", nullptr, nullptr);
+}
+
+void VulkanApp::initVulkan() {
     createInstance();
-    std::cout << "Vulkan application is running!" << std::endl;
+
+    uint32_t extensionCount = 0;
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+    std::cout << extensionCount << " extensions supported\n";
+
+    glm::mat4 matrix;
+    glm::vec4 vec;
+    auto test = matrix * vec;
+}
+
+void VulkanApp::mainLoop() {
+    while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+    }
+}
+
+void VulkanApp::cleanup() {
+    if (window) {
+        glfwDestroyWindow(window);
+        glfwTerminate();
+    }
+
+    if (instance) {
+        vkDestroyInstance(instance, nullptr);
+        instance = nullptr;
+    }
 }
 
 bool VulkanApp::checkValidationLayerSupport() {
@@ -73,11 +110,4 @@ void VulkanApp::createInstance() {
     }
 
     std::cout << "Vulkan instance created successfully!" << std::endl;
-}
-
-void VulkanApp::cleanup() {
-    if (instance) {
-        vkDestroyInstance(instance, nullptr);
-        instance = nullptr;
-    }
 }
