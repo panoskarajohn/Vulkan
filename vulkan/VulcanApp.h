@@ -1,5 +1,4 @@
-#ifndef VULKAN_APP_H
-#define VULKAN_APP_H
+#pragma once
 
 #define GLFW_INCLUDE_VULCAN
 #include <GLFW/glfw3.h>
@@ -37,5 +36,3 @@ private:
     void createInstance();
     
 };
-
-#endif
